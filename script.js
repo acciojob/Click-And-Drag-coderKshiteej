@@ -11,7 +11,7 @@ slider.addEventListener('mousedown', (e) => {
   scrollLeft = slider.scrollLeft;
 });
 
-// When mouse leaves the container
+// When mouse leaves container
 slider.addEventListener('mouseleave', () => {
   isDown = false;
   slider.classList.remove('active');
@@ -28,6 +28,6 @@ slider.addEventListener('mousemove', (e) => {
   if (!isDown) return;
   e.preventDefault();
   const x = e.pageX - slider.offsetLeft;
-  const walk = (x - startX) * 2; // Scroll speed
+  const walk = (x - startX) * 2; // scroll speed
   slider.scrollLeft = scrollLeft - walk;
 });

@@ -4,7 +4,7 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: #f2f2f2;
+  background: #ececec;
 }
 
 /* Scrollable area */
@@ -13,8 +13,10 @@ body {
   overflow-x: scroll;
   cursor: grab;
   width: 80%;
+  height: 200px;              /* ✅ Add height so Cypress sees it */
   border: 2px solid #000;
   padding: 20px;
+  background: #fff;
   scroll-behavior: smooth;
 }
 
@@ -22,12 +24,18 @@ body {
   cursor: grabbing;
 }
 
-/* Cubes inside the scrollable container */
+/* Cubes */
 .cube {
   width: 150px;
   height: 150px;
   margin-right: 20px;
-  background-color: steelblue;
+  background: linear-gradient(135deg, #007bff, #00c6ff);
   border-radius: 10px;
   flex-shrink: 0;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  font-family: sans-serif;
 }
