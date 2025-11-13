@@ -2,92 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Draggable Cubes</title>
-  <style>
-    .container {
-      width: 500px;
-      height: 500px;
-      border: 2px solid #333;
-      position: relative;
-      margin: 50px auto;
-      display: flex;
-      flex-wrap: wrap;
-    }
-
-    .cube {
-      width: 100px;
-      height: 100px;
-      background-color: skyblue;
-      border: 2px solid #000;
-      box-sizing: border-box;
-      position: absolute;
-      cursor: grab;
-      user-select: none;
-    }
-
-    .cube:active {
-      cursor: grabbing;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Draggable Items</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
+  <div class="items">
+    <div class="cube"></div>
+    <div class="cube"></div>
     <div class="cube"></div>
     <div class="cube"></div>
     <div class="cube"></div>
     <div class="cube"></div>
   </div>
 
-  <script>
-    const container = document.querySelector('.container');
-    const cubes = document.querySelectorAll('.cube');
-
-    let selectedCube = null;
-    let offsetX = 0;
-    let offsetY = 0;
-
-    // Initial grid positions
-    const gridPositions = [
-      { left: 20, top: 20 },
-      { left: 140, top: 20 },
-      { left: 20, top: 140 },
-      { left: 140, top: 140 }
-    ];
-
-    cubes.forEach((cube, i) => {
-      // Assign grid positions
-      cube.style.left = gridPositions[i].left + 'px';
-      cube.style.top = gridPositions[i].top + 'px';
-
-      // Mouse down (select cube)
-      cube.addEventListener('mousedown', (e) => {
-        selectedCube = cube;
-        const rect = cube.getBoundingClientRect();
-        offsetX = e.clientX - rect.left;
-        offsetY = e.clientY - rect.top;
-      });
-    });
-
-    // Move cube with mouse
-    document.addEventListener('mousemove', (e) => {
-      if (!selectedCube) return;
-
-      const containerRect = container.getBoundingClientRect();
-      let newLeft = e.clientX - containerRect.left - offsetX;
-      let newTop = e.clientY - containerRect.top - offsetY;
-
-      // Boundary conditions
-      newLeft = Math.max(0, Math.min(newLeft, container.clientWidth - selectedCube.offsetWidth));
-      newTop = Math.max(0, Math.min(newTop, container.clientHeight - selectedCube.offsetHeight));
-
-      selectedCube.style.left = newLeft + 'px';
-      selectedCube.style.top = newTop + 'px';
-    });
-
-    // Drop cube
-    document.addEventListener('mouseup', () => {
-      selectedCube = null;
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>

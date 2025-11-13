@@ -1,0 +1,33 @@
+body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #f2f2f2;
+}
+
+/* Scrollable area */
+.items {
+  display: flex;
+  overflow-x: scroll;
+  cursor: grab;
+  width: 80%;
+  border: 2px solid #000;
+  padding: 20px;
+  scroll-behavior: smooth;
+}
+
+.items.active {
+  cursor: grabbing;
+}
+
+/* Cubes inside the scrollable container */
+.cube {
+  width: 150px;
+  height: 150px;
+  margin-right: 20px;
+  background-color: steelblue;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
