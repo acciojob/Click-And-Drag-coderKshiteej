@@ -6,7 +6,7 @@ let scrollLeft;
 slider.addEventListener('mousedown', (e) => {
   isDown = true;
   slider.classList.add('active');
-  startX = e.pageX - slider.offsetLeft;
+  startX = e.pageX;
   scrollLeft = slider.scrollLeft;
 });
 
@@ -23,7 +23,9 @@ slider.addEventListener('mouseup', () => {
 slider.addEventListener('mousemove', (e) => {
   if (!isDown) return;
   e.preventDefault();
-  const x = e.pageX - slider.offsetLeft;
-  const walk = (x - startX) * 2; // Scroll speed
-  slider.scrollLeft = scrollLeft - walk;
+
+  // Calculate distance moved
+  const x = e.pageX;
+  const walk = (startX - x); // positive when moving left
+  slider.scrollLeft = scrollLeft + walk; // move content to right while dragging left
 });
