@@ -5,19 +5,20 @@ let selectedCube = null;
 let offsetX = 0;
 let offsetY = 0;
 
-// Position cubes initially in grid layout
+// Position cubes in initial grid layout
 cubes.forEach((cube, index) => {
-  const col = index % 4;
-  const row = Math.floor(index / 4);
-  cube.style.left = `${col * 110}px`; // 100px cube + 10px gap
-  cube.style.top = `${row * 110}px`;
+  const col = index % 5; // max 5 per row (changeable)
+  const row = Math.floor(index / 5);
+  cube.style.left = `${col * 110}px`; 
+  cube.style.top = `${row * 110}px`;   
 });
 
-// Mouse down → select cube
+// Mouse down → start drag
 cubes.forEach(cube => {
   cube.addEventListener("mousedown", (e) => {
     selectedCube = cube;
     const rect = cube.getBoundingClientRect();
+
     offsetX = e.clientX - rect.left;
     offsetY = e.clientY - rect.top;
   });
@@ -31,11 +32,11 @@ document.addEventListener("mousemove", (e) => {
   const cubeWidth = selectedCube.offsetWidth;
   const cubeHeight = selectedCube.offsetHeight;
 
-  // Calculate new position
+  // New position relative to container
   let newLeft = e.clientX - containerRect.left - offsetX;
   let newTop = e.clientY - containerRect.top - offsetY;
 
-  // Boundary constraints
+  // Boundaries
   newLeft = Math.max(0, Math.min(newLeft, containerRect.width - cubeWidth));
   newTop = Math.max(0, Math.min(newTop, containerRect.height - cubeHeight));
 
@@ -43,7 +44,7 @@ document.addEventListener("mousemove", (e) => {
   selectedCube.style.top = `${newTop}px`;
 });
 
-// Mouse up → release cube
+// Mouse up → release
 document.addEventListener("mouseup", () => {
   selectedCube = null;
 });
