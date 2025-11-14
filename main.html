@@ -88,29 +88,12 @@
             font-size: 0.9em;
             opacity: 0.8;
         }
-
-        @media (max-width: 650px) {
-            .container {
-                width: 90vw;
-                height: 90vw;
-                max-width: 500px;
-                max-height: 500px;
-            }
-
-            h1 {
-                font-size: 1.5em;
-            }
-
-            .items {
-                font-size: 1.2em;
-            }
-        }
     </style>
 </head>
 <body>
     <h1>🎯 Draggable Cubes</h1>
     <div class="instructions">Click and drag any cube to move it around the container</div>
-    
+
     <div class="container" id="container">
         <div class="items" data-id="1">1</div>
         <div class="items" data-id="2">2</div>
@@ -142,107 +125,73 @@
         let offsetY = 0;
         let dragCount = 0;
 
-        // Get container boundaries
         function getContainerBounds() {
             const rect = container.getBoundingClientRect();
             return {
                 left: rect.left,
                 top: rect.top,
-                right: rect.right,
-                bottom: rect.bottom,
                 width: rect.width,
                 height: rect.height
             };
         }
 
-        // Initialize drag for each item
         items.forEach(item => {
             item.addEventListener('mousedown', handleMouseDown);
         });
 
         function handleMouseDown(e) {
             e.preventDefault();
-            
+
             activeItem = e.target;
             const rect = activeItem.getBoundingClientRect();
-            const containerBounds = getContainerBounds();
+            const bounds = getContainerBounds();
 
-            // Calculate offset from mouse position to item's top-left corner
             offsetX = e.clientX - rect.left;
             offsetY = e.clientY - rect.top;
 
-            // Convert to absolute positioning
             activeItem.style.position = 'absolute';
+            activeItem.style.left = (rect.left - bounds.left) + 'px';
+            activeItem.style.top = (rect.top - bounds.top) + 'px';
             activeItem.style.width = rect.width + 'px';
             activeItem.style.height = rect.height + 'px';
-            activeItem.style.left = (rect.left - containerBounds.left) + 'px';
-            activeItem.style.top = (rect.top - containerBounds.top) + 'px';
-            activeItem.style.gridColumn = 'unset';
-            activeItem.style.gridRow = 'unset';
-            
+
             activeItem.classList.add('dragging');
 
-            // Add global listeners for drag and drop
             document.addEventListener('mousemove', handleMouseMove);
             document.addEventListener('mouseup', handleMouseUp);
 
-            stats.textContent = `Dragging Item ${activeItem.dataset.id}...`;
+            stats.textContent = `Dragging item ${activeItem.dataset.id}...`;
         }
 
         function handleMouseMove(e) {
             if (!activeItem) return;
 
-            const containerBounds = getContainerBounds();
+            const bounds = getContainerBounds();
             const itemWidth = activeItem.offsetWidth;
             const itemHeight = activeItem.offsetHeight;
 
-            // Calculate new position
-            let newLeft = e.clientX - containerBounds.left - offsetX;
-            let newTop = e.clientY - containerBounds.top - offsetY;
+            let left = e.clientX - bounds.left - offsetX;
+            let top = e.clientY - bounds.top - offsetY;
 
-            // Apply boundary constraints
-            newLeft = Math.max(0, Math.min(newLeft, containerBounds.width - itemWidth));
-            newTop = Math.max(0, Math.min(newTop, containerBounds.height - itemHeight));
+            left = Math.max(0, Math.min(left, bounds.width - itemWidth));
+            top = Math.max(0, Math.min(top, bounds.height - itemHeight));
 
-            // Update position
-            activeItem.style.left = newLeft + 'px';
-            activeItem.style.top = newTop + 'px';
+            activeItem.style.left = left + 'px';
+            activeItem.style.top = top + 'px';
         }
 
-        function handleMouseUp(e) {
+        function handleMouseUp() {
             if (!activeItem) return;
 
             activeItem.classList.remove('dragging');
             dragCount++;
-            
+
             stats.textContent = `Item ${activeItem.dataset.id} dropped! Total drags: ${dragCount}`;
 
-            // Clean up
             activeItem = null;
             document.removeEventListener('mousemove', handleMouseMove);
             document.removeEventListener('mouseup', handleMouseUp);
         }
-
-        // Handle window resize to maintain boundaries
-        window.addEventListener('resize', () => {
-            items.forEach(item => {
-                if (item.style.position === 'absolute') {
-                    const containerBounds = getContainerBounds();
-                    const itemWidth = item.offsetWidth;
-                    const itemHeight = item.offsetHeight;
-                    const currentLeft = parseFloat(item.style.left);
-                    const currentTop = parseFloat(item.style.top);
-
-                    // Re-apply constraints if needed
-                    if (currentLeft + itemWidth > containerBounds.width) {
-                        item.style.left = (containerBounds.width - itemWidth) + 'px';
-                    }
-                    if (currentTop + itemHeight > containerBounds.height) {
-                        item.style.top = (containerBounds.height - itemHeight) + 'px';
-                    }
-                }
-            });
-        });
     </script>
 </body>
 </html>
