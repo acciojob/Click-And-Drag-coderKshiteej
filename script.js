@@ -1,33 +1,49 @@
-const slider = document.querySelector('.items');
-let isDown = false;
-let startX;
-let scrollLeft;
+const container = document.getElementById("container");
+const cubes = document.querySelectorAll(".cube");
 
-// When mouse button is pressed
-slider.addEventListener('mousedown', (e) => {
-  isDown = true;
-  slider.classList.add('active');
-  startX = e.pageX - slider.offsetLeft;
-  scrollLeft = slider.scrollLeft;
+let selectedCube = null;
+let offsetX = 0;
+let offsetY = 0;
+
+// Position cubes initially in grid layout
+cubes.forEach((cube, index) => {
+  const col = index % 4;
+  const row = Math.floor(index / 4);
+  cube.style.left = `${col * 110}px`; // 100px cube + 10px gap
+  cube.style.top = `${row * 110}px`;
 });
 
-// When mouse leaves container
-slider.addEventListener('mouseleave', () => {
-  isDown = false;
-  slider.classList.remove('active');
+// Mouse down → select cube
+cubes.forEach(cube => {
+  cube.addEventListener("mousedown", (e) => {
+    selectedCube = cube;
+    const rect = cube.getBoundingClientRect();
+    offsetX = e.clientX - rect.left;
+    offsetY = e.clientY - rect.top;
+  });
 });
 
-// When mouse is released
-slider.addEventListener('mouseup', () => {
-  isDown = false;
-  slider.classList.remove('active');
+// Mouse move → drag cube
+document.addEventListener("mousemove", (e) => {
+  if (!selectedCube) return;
+
+  const containerRect = container.getBoundingClientRect();
+  const cubeWidth = selectedCube.offsetWidth;
+  const cubeHeight = selectedCube.offsetHeight;
+
+  // Calculate new position
+  let newLeft = e.clientX - containerRect.left - offsetX;
+  let newTop = e.clientY - containerRect.top - offsetY;
+
+  // Boundary constraints
+  newLeft = Math.max(0, Math.min(newLeft, containerRect.width - cubeWidth));
+  newTop = Math.max(0, Math.min(newTop, containerRect.height - cubeHeight));
+
+  selectedCube.style.left = `${newLeft}px`;
+  selectedCube.style.top = `${newTop}px`;
 });
 
-// When mouse moves
-slider.addEventListener('mousemove', (e) => {
-  if (!isDown) return;
-  e.preventDefault();
-  const x = e.pageX - slider.offsetLeft;
-  const walk = (x - startX) * 2; // scroll speed
-  slider.scrollLeft = scrollLeft - walk;
+// Mouse up → release cube
+document.addEventListener("mouseup", () => {
+  selectedCube = null;
 });
