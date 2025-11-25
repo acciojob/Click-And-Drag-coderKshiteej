@@ -1,5 +1,5 @@
 const container = document.getElementById('container');
-const cubes = document.querySelectorAll('.items'); // Matches Cypress test
+const cubes = document.querySelectorAll('.items'); // <-- FIXED
 
 let activeCube = null;
 let offsetX = 0;
