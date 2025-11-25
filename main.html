@@ -1,197 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Draggable Cubes</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        h1 {
-            color: white;
-            margin-bottom: 10px;
-            font-size: 2em;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .instructions {
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 30px;
-            text-align: center;
-            font-size: 0.95em;
-        }
-
-        .container {
-            position: relative;
-            width: 600px;
-            height: 600px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            padding: 20px;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-template-rows: repeat(4, 1fr);
-            gap: 15px;
-        }
-
-        .items {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 10px;
-            cursor: grab;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 1.5em;
-            user-select: none;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .items:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .items.dragging {
-            cursor: grabbing;
-            z-index: 1000;
-            position: absolute;
-            transform: scale(1.1);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-            opacity: 0.9;
-        }
-
-        .stats {
-            color: white;
-            margin-top: 20px;
-            text-align: center;
-            font-size: 0.9em;
-            opacity: 0.8;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Draggable Cubes</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #667eea;
+  }
+  h1 { color: white; margin-bottom: 10px; }
+  .container {
+    position: relative;
+    width: 600px;
+    height: 600px;
+    background: #fff;
+    border-radius: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 15px;
+  }
+  .cube {
+    width: 130px;
+    height: 130px;
+    background: linear-gradient(135deg,#667eea,#764ba2);
+    color: white;
+    font-size: 2em;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    cursor: grab;
+    user-select: none;
+    position: relative;
+    transition: transform 0.2s;
+  }
+  .cube.dragging {
+    cursor: grabbing;
+    z-index: 1000;
+    transform: scale(1.1);
+    opacity: 0.9;
+  }
+</style>
 </head>
 <body>
-    <h1>🎯 Draggable Cubes</h1>
-    <div class="instructions">Click and drag any cube to move it around the container</div>
 
-    <div class="container" id="container">
-        <div class="items" data-id="1">1</div>
-        <div class="items" data-id="2">2</div>
-        <div class="items" data-id="3">3</div>
-        <div class="items" data-id="4">4</div>
-        <div class="items" data-id="5">5</div>
-        <div class="items" data-id="6">6</div>
-        <div class="items" data-id="7">7</div>
-        <div class="items" data-id="8">8</div>
-        <div class="items" data-id="9">9</div>
-        <div class="items" data-id="10">10</div>
-        <div class="items" data-id="11">11</div>
-        <div class="items" data-id="12">12</div>
-        <div class="items" data-id="13">13</div>
-        <div class="items" data-id="14">14</div>
-        <div class="items" data-id="15">15</div>
-        <div class="items" data-id="16">16</div>
-    </div>
+<h1>🎯 Draggable Cubes</h1>
+<div class="container" id="container">
+  <!-- 16 cubes -->
+  <div class="cube" data-id="1">1</div>
+  <div class="cube" data-id="2">2</div>
+  <div class="cube" data-id="3">3</div>
+  <div class="cube" data-id="4">4</div>
+  <div class="cube" data-id="5">5</div>
+  <div class="cube" data-id="6">6</div>
+  <div class="cube" data-id="7">7</div>
+  <div class="cube" data-id="8">8</div>
+  <div class="cube" data-id="9">9</div>
+  <div class="cube" data-id="10">10</div>
+  <div class="cube" data-id="11">11</div>
+  <div class="cube" data-id="12">12</div>
+  <div class="cube" data-id="13">13</div>
+  <div class="cube" data-id="14">14</div>
+  <div class="cube" data-id="15">15</div>
+  <div class="cube" data-id="16">16</div>
+</div>
 
-    <div class="stats" id="stats">Ready to drag!</div>
+<script>
+const container = document.getElementById('container');
+const cubes = document.querySelectorAll('.cube');
 
-    <script>
-        const container = document.getElementById('container');
-        const items = document.querySelectorAll('.items');
-        const stats = document.getElementById('stats');
+let activeCube = null;
+let offsetX = 0;
+let offsetY = 0;
 
-        let activeItem = null;
-        let offsetX = 0;
-        let offsetY = 0;
-        let dragCount = 0;
+cubes.forEach(cube => {
+  cube.addEventListener('mousedown', (e) => {
+    activeCube = cube;
+    const rect = cube.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
 
-        function getContainerBounds() {
-            const rect = container.getBoundingClientRect();
-            return {
-                left: rect.left,
-                top: rect.top,
-                width: rect.width,
-                height: rect.height
-            };
-        }
+    offsetX = e.clientX - rect.left;
+    offsetY = e.clientY - rect.top;
 
-        items.forEach(item => {
-            item.addEventListener('mousedown', handleMouseDown);
-        });
+    cube.style.position = 'absolute';
+    cube.style.left = rect.left - containerRect.left + 'px';
+    cube.style.top = rect.top - containerRect.top + 'px';
+    cube.style.width = rect.width + 'px';
+    cube.style.height = rect.height + 'px';
+    cube.classList.add('dragging');
 
-        function handleMouseDown(e) {
-            e.preventDefault();
+    document.addEventListener('mousemove', drag);
+    document.addEventListener('mouseup', drop);
+  });
+});
 
-            activeItem = e.target;
-            const rect = activeItem.getBoundingClientRect();
-            const bounds = getContainerBounds();
+function drag(e) {
+  if (!activeCube) return;
+  const containerRect = container.getBoundingClientRect();
+  const cubeRect = activeCube.getBoundingClientRect();
 
-            offsetX = e.clientX - rect.left;
-            offsetY = e.clientY - rect.top;
+  let left = e.clientX - containerRect.left - offsetX;
+  let top = e.clientY - containerRect.top - offsetY;
 
-            activeItem.style.position = 'absolute';
-            activeItem.style.left = (rect.left - bounds.left) + 'px';
-            activeItem.style.top = (rect.top - bounds.top) + 'px';
-            activeItem.style.width = rect.width + 'px';
-            activeItem.style.height = rect.height + 'px';
+  // Boundary check
+  left = Math.max(0, Math.min(left, containerRect.width - cubeRect.width));
+  top = Math.max(0, Math.min(top, containerRect.height - cubeRect.height));
 
-            activeItem.classList.add('dragging');
+  activeCube.style.left = left + 'px';
+  activeCube.style.top = top + 'px';
+}
 
-            document.addEventListener('mousemove', handleMouseMove);
-            document.addEventListener('mouseup', handleMouseUp);
+function drop() {
+  if (!activeCube) return;
+  activeCube.classList.remove('dragging');
+  activeCube = null;
+  document.removeEventListener('mousemove', drag);
+  document.removeEventListener('mouseup', drop);
+}
+</script>
 
-            stats.textContent = `Dragging item ${activeItem.dataset.id}...`;
-        }
-
-        function handleMouseMove(e) {
-            if (!activeItem) return;
-
-            const bounds = getContainerBounds();
-            const itemWidth = activeItem.offsetWidth;
-            const itemHeight = activeItem.offsetHeight;
-
-            let left = e.clientX - bounds.left - offsetX;
-            let top = e.clientY - bounds.top - offsetY;
-
-            left = Math.max(0, Math.min(left, bounds.width - itemWidth));
-            top = Math.max(0, Math.min(top, bounds.height - itemHeight));
-
-            activeItem.style.left = left + 'px';
-            activeItem.style.top = top + 'px';
-        }
-
-        function handleMouseUp() {
-            if (!activeItem) return;
-
-            activeItem.classList.remove('dragging');
-            dragCount++;
-
-            stats.textContent = `Item ${activeItem.dataset.id} dropped! Total drags: ${dragCount}`;
-
-            activeItem = null;
-            document.removeEventListener('mousemove', handleMouseMove);
-            document.removeEventListener('mouseup', handleMouseUp);
-        }
-    </script>
 </body>
 </html>
